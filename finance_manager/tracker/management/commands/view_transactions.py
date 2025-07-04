@@ -7,7 +7,11 @@ from django.db.models import Sum
 class Command(BaseCommand):
     help = "View your transactions"
 
-    def handle(self, *args, **kwargs):
+    def add_arguments(self, parser):
+        parser.add_argument('--type', help="Filter by type: income or expense")
+        parser.add_argument('--category', help="Filter by category name")
+
+    def handle(self, *args, **options):
         username = get_logged_in_user()
 
         if not username:
@@ -16,14 +20,22 @@ class Command(BaseCommand):
         
         user = CustomUser.objects.get(username=username)
 
-        transactions = Transaction.objects.filter(user=user).order_by("-date")
+        transactions = Transaction.objects.filter(user=user)
+
+        if options['type']:
+            transactions = transactions.filter(type=options['type'].lower())
+
+        if options['category']:
+            transactions = transactions.filter(category__iexact=options['category'])
+
+        transactions = transactions.order_by('-date')
 
         if not transactions.exists():
             self.stdout.write(self.style.WARNING("No transactions found!"))
             return
         
         self.stdout.write(self.style.SUCCESS(f"\n Transactions for {username}:\n"))
-        
+
         for t in transactions:
             currency = user.preferred_currency
             self.stdout.write(f"[{t.date}] {t.type.title()} - {currency}{t.amount} ({t.category})")
