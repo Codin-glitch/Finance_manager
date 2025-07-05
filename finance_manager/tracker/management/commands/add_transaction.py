@@ -25,7 +25,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Invalid amount. Must be a number."))
             return
 
-        category = input("Category (e.g., Food, Salary, Rent): ").lower()
+        category = input("Category (e.g., Food, Salary, Rent): ").capitalize()
         description = input("Description (optional): ")
 
         Transaction.objects.create(
