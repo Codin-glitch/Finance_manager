@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         for t in transactions:
             currency = user.preferred_currency
-            self.stdout.write(f"[{t.date}] ID - {t.id} {t.type.title()} - {currency}{t.amount} ({t.category})")
+            self.stdout.write(f"ID - {t.id} [{t.date}] {t.type.title()} - {currency}{t.amount} ({t.category})")
 
         income_total = transactions.filter(type='income').aggregate(Sum('amount'))['amount__sum'] or 0
         expense_total = transactions.filter(type='expense').aggregate(Sum('amount'))['amount__sum'] or 0
