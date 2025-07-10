@@ -20,7 +20,7 @@ A Command-Line Interface (CLI) application built using Django to help users mana
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Codin-glitch/Finance_management.git
+git clone https://github.com/Codin-glitch/Finance_manager.git
 cd finance_manager
 ```
 
